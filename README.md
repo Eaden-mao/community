@@ -6,7 +6,7 @@
 thymeleaf文档页面https://spring.io/guides/gs/serving-web-content/
 github app文档https://developer.github.com/apps/building-github-apps/creating-a-github-app/
 springboot mybatis整合https://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/
-
+flyway migration官网https://flywaydb.org/getstarted/firststeps/maven
 ##脚本
 ```sql
 DROP TABLE IF EXISTS `user`;

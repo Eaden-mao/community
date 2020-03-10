@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 
@@ -43,7 +45,8 @@ public class LoginController {
     @GetMapping("/callback")
     public String callback(@RequestParam(name="code") String code,
                            @RequestParam(name="state") String state,
-                           HttpServletRequest request){
+                           HttpServletRequest request,
+                           HttpServletResponse response){
 
         GithubAccessTokenDTO githubAccessTokenDTO = new GithubAccessTokenDTO();
         githubAccessTokenDTO.setClient_id(clientId);
@@ -59,16 +62,22 @@ public class LoginController {
             User user = new User();
             user.setAccountId(String.valueOf(userMessage.getId()));
             user.setName(userMessage.getName());
-            user.setToken(UUID.randomUUID().toString());
+            String token = UUID.randomUUID().toString();
+            user.setToken(token);
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
+            //根据三方获取的user信息，插入自己的数据库
             userMapper.insert(user);
+            //将token放在本地浏览器，方便服务器重启后仍然在登录状态
+            response.addCookie(new Cookie("token",token));
+            //将用户信息放到session域中
             request.getSession().setAttribute("user",userMessage);
             return "redirect:/";
         }else{
             //登录失败
+            return "redirect:/";
         }
-        return "redirect:/";
+
 
     }
 
