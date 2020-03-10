@@ -2,8 +2,8 @@ package com.mao.community.provider;
 
 
 import com.alibaba.fastjson.JSON;
-import com.mao.community.entity.GithubAccessTokenEntity;
-import com.mao.community.entity.GithubUserEntity;
+import com.mao.community.dto.GithubAccessTokenDTO;
+import com.mao.community.dto.GithubUserDTO;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 
@@ -19,17 +19,17 @@ public class GithubProvider {
 
     /**
      * 通过okhttp发送post请求获取access token
-     * @param githubAccessTokenEntity
+     * @param githubAccessTokenDTO
      * @return
      * JSON.toJSONString(githubAccessTokenEntity) 将对象转换为json字符串
      * JSON.parseObject(string, GithubUserEntity.class) 把json字符串转化为实体类（当前方法为GithubUserEntity）
      */
-    public String getAccessToken(GithubAccessTokenEntity githubAccessTokenEntity){
+    public String getAccessToken(GithubAccessTokenDTO githubAccessTokenDTO){
         MediaType mediaType= MediaType.get("application/json; charset=utf-8");
 
         OkHttpClient client = new OkHttpClient();
 
-        RequestBody body = RequestBody.create(mediaType,JSON.toJSONString(githubAccessTokenEntity));
+        RequestBody body = RequestBody.create(mediaType,JSON.toJSONString(githubAccessTokenDTO));
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")
                 .post(body)
@@ -40,7 +40,6 @@ public class GithubProvider {
            String[] split= string.split("&");
            String tokenString=split[0];
            String accessToken=tokenString.split("=")[1];
-            System.out.println(accessToken);
             return accessToken;
         }catch (IOException e){
             e.printStackTrace();
@@ -53,7 +52,7 @@ public class GithubProvider {
      * @param accessToken
      * @return
      */
-    public GithubUserEntity getUserMessage(String accessToken){
+    public GithubUserDTO getUserMessage(String accessToken){
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url("https://api.github.com/user?access_token="+accessToken)
@@ -61,9 +60,8 @@ public class GithubProvider {
         try {
             Response response = client.newCall(request).execute();
             String string=response.body().string();
-            System.out.println(string);
-            GithubUserEntity githubUserEntity = JSON.parseObject(string, GithubUserEntity.class);
-            return githubUserEntity;
+            GithubUserDTO githubUserDTO = JSON.parseObject(string, GithubUserDTO.class);
+            return githubUserDTO;
         } catch (IOException e) {
             e.printStackTrace();
         }

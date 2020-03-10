@@ -1,4 +1,4 @@
-package com.mao.community.entity;
+package com.mao.community.dto;
 
 /**
  * 封装一个community获取code之后去三方获取accessToken时需要发送的内容对象
@@ -9,21 +9,21 @@ package com.mao.community.entity;
  * state：上一步state（一个随机数）
  * @author maoea
  */
-public class GithubAccessTokenEntity {
+public class GithubAccessTokenDTO {
     private String client_id;
     private String client_secret;
     private String code;
     private String redirect_uri;
     private String state;
 
-    public GithubAccessTokenEntity(String client_id, String client_secret, String code, String redirect_uri, String state) {
+    public GithubAccessTokenDTO(String client_id, String client_secret, String code, String redirect_uri, String state) {
         this.client_id = client_id;
         this.client_secret = client_secret;
         this.code = code;
         this.redirect_uri = redirect_uri;
         this.state = state;
     }
-    public GithubAccessTokenEntity(){
+    public GithubAccessTokenDTO(){
     }
     public String getClient_id() {
         return client_id;
@@ -63,5 +63,16 @@ public class GithubAccessTokenEntity {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    @Override
+    public String toString() {
+        return "GithubAccessTokenDTO{" +
+                "client_id='" + client_id + '\'' +
+                ", client_secret='" + client_secret + '\'' +
+                ", code='" + code + '\'' +
+                ", redirect_uri='" + redirect_uri + '\'' +
+                ", state='" + state + '\'' +
+                '}';
     }
 }

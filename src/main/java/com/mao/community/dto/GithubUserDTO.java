@@ -1,4 +1,4 @@
-package com.mao.community.entity;
+package com.mao.community.dto;
 
 /**
  * @author maoea
@@ -7,7 +7,7 @@ package com.mao.community.entity;
  * id：github id号（唯一）后期可用于数据库
  * bio：github个人简介
  */
-public class GithubUserEntity {
+public class GithubUserDTO {
 
     private String name;
     private Long id;
@@ -36,4 +36,13 @@ public class GithubUserEntity {
     public void setBio(String bio) {
         this.bio = bio;
     }
+    @Override
+    public String toString() {
+        return "GithubUserDTO{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", bio='" + bio + '\'' +
+                '}';
+    }
+
 }
